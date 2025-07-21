@@ -1,10 +1,7 @@
 const port = process.env.PORT || 3000;
-const FILE_PATH = process.env.FILE_PATH || '/tmp';
 const http = require('http');
-const fs = require('fs');
 const { spawn } = require('child_process');
 
-const subFilePath = FILE_PATH + '/log.txt';
 const server = http.createServer((req, res) => {
     if (req.url === '/') {
         res.writeHead(200);

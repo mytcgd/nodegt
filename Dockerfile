@@ -1,10 +1,12 @@
-FROM node:alpine
+FROM node:slim
 
 WORKDIR /app
 
 COPY package.json ./
-RUN apk update && \
-    apk add --no-cache bash wget curl procps && \
+RUN apt-get update && \
+    apt-get install -y bash curl wget unzip iproute2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     npm install
 
 COPY app.js start.sh ./
