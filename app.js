@@ -1,34 +1,17 @@
-const port = process.env.PORT || process.env.SERVER_PORT || 3000;
+const port = process.env.PORT || 3000;
 const FILE_PATH = process.env.FILE_PATH || '/tmp';
 const http = require('http');
 const fs = require('fs');
 const { spawn } = require('child_process');
-const openhttp = process.env.openhttp || '1'; // 0 or 1
-
-const startScriptPath = `./start.sh`;
-fs.chmodSync(startScriptPath, 0o755);
-const startScript = spawn(startScriptPath, [], {
-    env: {
-        ...process.env,
-        openhttp: openhttp
-    }
-});
-startScript.stdout.on('data', (data) => {
-    console.log(`${data}`);
-});
-startScript.stderr.on('data', (data) => {
-    console.error(`${data}`);
-});
-startScript.on('error', (error) => {
-    console.error(`boot error: ${error}`);
-    process.exit(1);
-});
 
 const subFilePath = FILE_PATH + '/log.txt';
 const server = http.createServer((req, res) => {
     if (req.url === '/') {
         res.writeHead(200);
         res.end('hello world');
+    } else if (req.url === '/healthcheck') {
+        res.writeHead(200);
+        res.end('ok');
     } else if (req.url === '/sub') {
         fs.readFile(subFilePath, 'utf8', (error, data) => {
             if (error) {
@@ -44,7 +27,14 @@ const server = http.createServer((req, res) => {
         res.end('Not found');
     }
 });
+
+// run
+const startScriptPath = `/app/start.sh`;
+const childProcess = spawn(startScriptPath, [], {
+    detached: false,
+    stdio: 'inherit',
+});
+
 server.listen(port, () => {
     console.log(`server is listening on port ${port}`);
 });
-
