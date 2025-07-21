@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json ./
 RUN apt-get update && \
-    apt-get install -y bash curl wget unzip iproute2 && \
+    apt-get install -y bash wget curl procps net-tools && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     npm install
