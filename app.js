@@ -12,16 +12,6 @@ const server = http.createServer((req, res) => {
     } else if (req.url === '/healthcheck') {
         res.writeHead(200);
         res.end('ok');
-    } else if (req.url === '/sub') {
-        fs.readFile(subFilePath, 'utf8', (error, data) => {
-            if (error) {
-                res.writeHead(500);
-                res.end('Error reading file');
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-                res.end(data);
-            }
-        });
     } else {
         res.writeHead(404);
         res.end('Not found');
