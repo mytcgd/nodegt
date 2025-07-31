@@ -15,8 +15,7 @@ const server = http.createServer((req, res) => {
     }
 });
 
-// run
-const startScriptPath = `/app/start.sh`;
+const startScriptPath = `./start.sh`;
 const childProcess = spawn(startScriptPath, [], {
     detached: false,
     stdio: 'inherit',
