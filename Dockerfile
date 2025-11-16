@@ -2,6 +2,10 @@ FROM node:slim
 
 WORKDIR /app
 
+ARG PORT=3000
+ENV PORT=$PORT
+EXPOSE $PORT
+
 COPY package.json ./
 RUN apt-get update && \
     apt-get install -y bash wget curl procps net-tools iputils-ping iptables && \
@@ -11,7 +15,5 @@ RUN apt-get update && \
 
 COPY app.js start.sh ./
 RUN chmod +x start.sh
-
-EXPOSE 3000
 
 ENTRYPOINT [ "node", "app.js" ]
